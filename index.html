@@ -252,18 +252,15 @@
             }, 1000);
         }
 
-        // Function to send logs to Unity
         function sendLogToUnity(log) {
             if (window.UnityBridge && window.UnityBridge.postMessage) {
                 const jsonData = JSON.stringify(log);
-                window.UnityBridge.postMessage(jsonData);
+                window.UnityBridge.postMessage(jsonData); // Send the log data to Unity
             } else {
                 console.error("UnityBridge is not available. Logs cannot be saved.");
             }
         }
-
-
-
+        
         function stopTimer() {
             clearInterval(timerInterval);
             timerInterval = null;
