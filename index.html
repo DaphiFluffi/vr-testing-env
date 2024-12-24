@@ -202,10 +202,27 @@
             }, maxTaskTime);
         }
 
-        function stopTask() {
+        /*function stopTask() {
             if (!taskStartTime) return; // Prevent stopping without starting
             document.getElementById('stop-task').classList.add('active');
             saveLogs(`task_log_${new Date().toISOString()}`);
+            stopTimer();
+            resetButtons();
+        }*/
+
+        
+        // Example usage when stopping the task
+        function stopTask() {
+            if (!taskStartTime) return; // Prevent stopping without starting
+            document.getElementById('stop-task').classList.add('active');
+
+            const logFileName = `task_log_${new Date().toISOString()}`;
+            const log = {
+                fileName: `${logFileName}.json`,
+                data: logData,
+            };
+
+            sendLogToUnity(log); // Send log to Unity
             stopTimer();
             resetButtons();
         }
@@ -234,6 +251,18 @@
                 timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }, 1000);
         }
+
+        // Function to send logs to Unity
+        function sendLogToUnity(log) {
+            if (window.UnityBridge && window.UnityBridge.postMessage) {
+                const jsonData = JSON.stringify(log);
+                window.UnityBridge.postMessage(jsonData);
+            } else {
+                console.error("UnityBridge is not available. Logs cannot be saved.");
+            }
+        }
+
+
 
         function stopTimer() {
             clearInterval(timerInterval);
