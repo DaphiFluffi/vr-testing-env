@@ -15,7 +15,7 @@ jobs:
 
       - name: Replace Placeholder with Token
         run: |
-          sed -i 's/__GITHUB_TOKEN_PLACEHOLDER__/${{ secrets.M_GITHUB_TOKEN }}/g' path/to/your/javascript/file.js
+          sed -i 's/__GITHUB_TOKEN_PLACEHOLDER__/${{ secrets.M_GITHUB_TOKEN }}/g' index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
