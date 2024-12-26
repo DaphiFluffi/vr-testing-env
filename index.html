@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VR Coding Test Environment</title>
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor/min/vs/loader.js"></script>
+
     <style>
         body {
             margin: 0;
@@ -48,6 +49,7 @@
         .light-mode #timer {
             color: #000;
         }
+        
     </style>
 </head>
 <body>
@@ -202,27 +204,10 @@
             }, maxTaskTime);
         }
 
-        /*function stopTask() {
-            if (!taskStartTime) return; // Prevent stopping without starting
-            document.getElementById('stop-task').classList.add('active');
-            saveLogs(`task_log_${new Date().toISOString()}`);
-            stopTimer();
-            resetButtons();
-        }*/
-
-        
-        // Example usage when stopping the task
         function stopTask() {
             if (!taskStartTime) return; // Prevent stopping without starting
             document.getElementById('stop-task').classList.add('active');
-
-            const logFileName = `task_log_${new Date().toISOString()}`;
-            const log = {
-                fileName: `${logFileName}.json`,
-                data: logData,
-            };
-
-            sendLogToUnity(log); // Send log to Unity
+            saveLogs(`task_log_${new Date().toISOString()}`);
             stopTimer();
             resetButtons();
         }
@@ -250,15 +235,6 @@
                 const seconds = Math.floor((elapsed % 60000) / 1000);
                 timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }, 1000);
-        }
-
-        function sendLogToUnity(log) {
-            if (window.UnityBridge && window.UnityBridge.postMessage) {
-                const jsonData = JSON.stringify(log);
-                window.UnityBridge.postMessage(jsonData); // Send the log data to Unity
-            } else {
-                console.error("UnityBridge is not available. Logs cannot be saved.");
-            }
         }
         
         function stopTimer() {
