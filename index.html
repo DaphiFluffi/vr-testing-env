@@ -265,6 +265,29 @@
                 });
             }
         });
+
+        const GITHUB_TOKEN = "__GITHUB_TOKEN_PLACEHOLDER__"; // Placeholder replaced during deployment
+
+        function saveLogsToGist(filename, content) {
+            fetch('https://api.github.com/gists', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${M_GITHUB_TOKEN}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    description: 'Uploaded by Plain JavaScript App',
+                    public: true,
+                    files: {
+                        [filename]: { content }
+                    }
+                })
+            })
+            .then(response => response.json())
+            .then(data => console.log(`Gist created: ${data.html_url}`))
+            .catch(error => console.error('Error creating gist:', error));
+        }
+
     </script>
 </body>
 </html>
