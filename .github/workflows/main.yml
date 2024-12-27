@@ -9,18 +9,18 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
-  steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Replace Placeholder with Token
-    env:
-      TOKEN: ${{ secrets.M_GITHUB_TOKEN }}
-    run: |
-      sed -i "s/__GITHUB_TOKEN_PLACEHOLDER__/${TOKEN}/g" main.js
+      - name: Replace Placeholder with Token
+        env:
+          TOKEN: ${{ secrets.M_GITHUB_TOKEN }}
+        run: |
+          sed -i "s/__GITHUB_TOKEN_PLACEHOLDER__/${TOKEN}/g" main.js
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.M_GITHUB_TOKEN }}
-        publish_dir: ./dist
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.M_GITHUB_TOKEN }}
+          publish_dir: ./dist
