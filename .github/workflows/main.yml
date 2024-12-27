@@ -13,11 +13,22 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Debug Before Token Replacement
+        run: |
+          echo "Before token replacement:"
+          cat main.js  # Display the content of main.js before replacement
+
       - name: Replace Placeholder with Token
         env:
           TOKEN: ${{ secrets.M_GITHUB_TOKEN }}
         run: |
+          echo "Replacing token..."
           sed -i "s/__GITHUB_TOKEN_PLACEHOLDER__/${TOKEN}/g" main.js
+          
+      - name: Debug After Token Replacement
+        run: |
+          echo "After token replacement:"
+          cat main.js  # Display the content of main.js after replacement
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
