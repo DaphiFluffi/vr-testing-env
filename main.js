@@ -141,7 +141,6 @@ public static int calculateSum(int a, int b) {
         if (!taskStartTime) return; // Prevent stopping without starting
         document.getElementById('stop-task').classList.add('active');
         saveLogs(`task_log_${new Date().toISOString()}`);
-        saveLogsToGist(`task_log_${new Date().toISOString()}`);
         stopTimer();
         resetButtons();
     }
@@ -154,11 +153,15 @@ public static int calculateSum(int a, int b) {
     }
 
     function saveLogs(filename) {
-        const blob = new Blob([JSON.stringify(logData, null, 2)], { type: 'application/json' });
+        const logContent = JSON.stringify(logData, null, 2);
+        const blob = new Blob([logContent], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = `${filename}.json`;
         a.click();
+    
+        // Save logs to a GitHub gist
+        saveLogsToGist(filename, logContent);
     }
 
     function startTimer() {
@@ -200,24 +203,25 @@ public static int calculateSum(int a, int b) {
         }
     });
 
-    const M_GITHUB_TOKEN = "__GITHUB_TOKEN_PLACEHOLDER__"; // Placeholder replaced during deployment
+    const GITHUB_TOKEN = "__GITHUB_TOKEN_PLACEHOLDER__"; // This is replaced by the workflow
 
     function saveLogsToGist(filename, content) {
         fetch('https://api.github.com/gists', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${M_GITHUB_TOKEN}`,
-                'Content-Type': 'application/json'
+                'Authorization': `Bearer ${GITHUB_TOKEN}`, // Use the injected token
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                description: 'Uploaded by Plain JavaScript App',
+                description: 'Task logs uploaded by the VR Coding Test Environment',
                 public: true,
                 files: {
-                    [filename]: { content }
-                }
-            })
+                    [filename]: { content },
+                },
+            }),
         })
-        .then(response => response.json())
-        .then(data => console.log(`Gist created: ${data.html_url}`))
-        .catch(error => console.error('Error creating gist:', error));
+            .then(response => response.json())
+            .then(data => console.log(`Gist created: ${data.html_url}`))
+            .catch(error => console.error('Error creating gist:', error));
     }
+    
