@@ -52,7 +52,7 @@ jobs:
 
       - name: Replace Token in main.js
         run: |
-          sed -i "s/__GITHUB_TOKEN_PLACEHOLDER__/${TOKEN}/g" main.js
+          sed -n "s/__GITHUB_TOKEN_PLACEHOLDER__/${TOKEN}/gp" main.js
           echo "Replaced token in main.js"
           grep 'const GITHUB_TOKEN' main.js
 
