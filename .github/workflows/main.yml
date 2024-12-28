@@ -39,3 +39,11 @@ jobs:
       - name: Debug Token Replacement
         run: |
           echo "Replaced token:" $(grep 'const GITHUB_TOKEN' main.js)
+
+      - name: Replace Placeholder with Token
+        env:
+          TOKEN: ${{ secrets.M_GITHUB_TOKEN }}
+        run: |
+          echo "Replacing token..."
+          sed -i "s/__GITHUB_TOKEN_PLACEHOLDER__/$TOKEN/g" main.js || exit 1
+          cat main.js  # Verify replacement
