@@ -47,3 +47,15 @@ jobs:
           echo "Replacing token..."
           sed -i "s/__GITHUB_TOKEN_PLACEHOLDER__/$TOKEN/g" main.js || exit 1
           cat main.js  # Verify replacement
+
+      - name: Debug Token Replacement
+        run: |
+          if [[ -z "${TOKEN}" ]]; then
+            echo "TOKEN is undefined or empty"
+          else
+            echo "Token length: ${#TOKEN}"
+          fi
+          echo "Replaced token:" $(grep 'const GITHUB_TOKEN' main.js)
+
+
+
