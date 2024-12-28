@@ -102,12 +102,7 @@ public static int calculateSum(int a, int b) {
     let maxTaskTime = 7 * 60 * 1000; // 7 minutes in milliseconds //todo Max task time
     let darkMode = true;
 
-    if (typeof window !== 'undefined') {
-        require.config({
-            paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor/min/vs' }
-        });
-    }
-    
+    require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor/min/vs' } });
     require(['vs/editor/editor.main'], function () {
         editor = monaco.editor.create(document.getElementById('editor-container'), {
             value: "// Select a task to load",
