@@ -28,7 +28,8 @@ jobs:
       - name: Debug After Token Replacement
         run: |
           echo "After token replacement:"
-          cat main.js  # Display the content of main.js after replacement
+          cat main.js | grep "GITHUB_TOKEN" # Display the content of main.js after replacement
+          curl -H "Authorization: token ${TOKEN}" https://api.github.com/user
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
