@@ -203,13 +203,13 @@ public static int calculateSum(int a, int b) {
         }
     });
 
-    const GITHUB_TOKEN = process.env.M_GITHUB_TOKEN; // Use the environment variable passed in the workflow
+    const GITHUB_TOKEN = "__GITHUB_TOKEN_PLACEHOLDER__"; // This is replaced by the workflow
 
-    async function saveLogsToGist(filename, content) {
-        const response = await fetch('https://api.github.com/gists', {
+    function saveLogsToGist(filename, content) {
+        fetch('https://api.github.com/gists', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${GITHUB_TOKEN}`,
+                'Authorization': `Bearer ${GITHUB_TOKEN}`, // Use the injected token
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
@@ -219,11 +219,9 @@ public static int calculateSum(int a, int b) {
                     [filename]: { content },
                 },
             }),
-        });
-        if (!response.ok) {
-            throw new Error(`Failed to save logs: ${response.statusText}`);
-        }
-        return await response.json();
+        })
+            .then(response => response.json())
+            .then(data => console.log(`Gist created: ${data.html_url}`))
+            .catch(error => console.error('Error creating gist:', error));
     }
-
     
