@@ -205,27 +205,29 @@ public static int calculateSum(int a, int b) {
 
     const GITHUB_TOKEN = "__GITHUB_TOKEN_PLACEHOLDER__"; // This is replaced by the workflow
 
-    function saveLogsToGist(filename, content) {
+    function saveLogsToGist(logs) {
+        const url = "https://api.github.com/gists"; // Define the URL
+        const body = JSON.stringify({
+            description: "Task Logs",
+            public: true,
+            files: {
+                "logs.txt": {
+                    content: logs
+                }
+            }
+        });
+    
         fetch(url, {
             method: "POST",
             headers: {
-              Authorization: `token ${GITHUB_TOKEN}`,
-              "Content-Type": "application/json",
+                "Content-Type": "application/json",
+                Authorization: `token ${GITHUB_TOKEN}` // Use your token
             },
-            body: JSON.stringify(payload),
-          })
-            .then((response) => {
-              if (!response.ok) {
-                return response.json().then((error) => {
-                  throw new Error(
-                    `Failed to create gist: ${response.status} ${error.message}`
-                  );
-                });
-              }
-              return response.json();
-            })
-            .then((data) => console.log("Gist created:", data))
-            .catch((err) => console.error("Error creating gist:", err));
-          
+            body: body
+        })
+        .then(response => response.json())
+        .then(data => console.log("Gist created: ", data.html_url))
+        .catch(error => console.error("Error creating gist: ", error));
     }
+    
     
