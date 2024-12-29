@@ -207,6 +207,7 @@ public static int calculateSum(int a, int b) {
 
     function saveLogsToGist(logs) {
         const url = "https://api.github.com/gists"; // Define the URL
+    
         const body = JSON.stringify({
             description: "Task Logs",
             public: true,
@@ -221,7 +222,7 @@ public static int calculateSum(int a, int b) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `token ${GITHUB_TOKEN}` // Use your token
+                Authorization: `Bearer ${GITHUB_TOKEN}` // Replace with your token
             },
             body: body
         })
@@ -229,5 +230,6 @@ public static int calculateSum(int a, int b) {
         .then(data => console.log("Gist created: ", data.html_url))
         .catch(error => console.error("Error creating gist: ", error));
     }
+    
     
     
